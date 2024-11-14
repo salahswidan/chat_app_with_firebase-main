@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
-  CustomTextField({this.hintText, this.onChanged});
+class CustomFormTextField extends StatelessWidget {
+  CustomFormTextField({this.hintText, this.onChanged});
 
   String? hintText;
   Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      keyboardType: TextInputType.emailAddress,
+    return TextFormField(
+      validator: (data) {
+        if (data!.isEmpty) {
+          return 'Please enter $hintText';
+        }
+      },
       style: TextStyle(color: Colors.white),
       onChanged: onChanged,
       decoration: InputDecoration(
