@@ -15,11 +15,40 @@ class ChatPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(Klogo, width: 40, height: 40),
-            Text('Scholar Chat', style: TextStyle(color: Colors.white)),
+            Center(
+                child: Text('Scholar Chat',
+                    style: TextStyle(color: Colors.white))),
           ],
         ),
       ),
-      body: ChatBuble(),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(itemBuilder: (context, index) {
+              return ChatBuble();
+            }),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Send a message',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.send,
+                    color: KprimaryColor,
+                  ),
+                  onPressed: () {},
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: KprimaryColor),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
