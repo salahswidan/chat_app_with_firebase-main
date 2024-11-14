@@ -1,3 +1,4 @@
+import 'package:chat_app_with_firebase/pages/chat_page.dart';
 import 'package:chat_app_with_firebase/pages/resgister_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false, home: ResgisterPage());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: ChatPage());
   }
 }

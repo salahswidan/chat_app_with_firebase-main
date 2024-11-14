@@ -4,6 +4,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../helper/show_snack_bar.dart';
 import '../widget/custom_button.dart';
 import '../widget/custom_text_field.dart';
+import 'chat_page.dart';
 import 'resgister_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -92,6 +93,10 @@ class _LoginPageState extends State<LoginPage> {
                           try {
                             await loginUser();
                             showSnackBar(context, 'success');
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return ChatPage();
+                            })) ;
                           } on FirebaseAuthException catch (ex) {
                             if (ex.code == 'user-not-found') {
                               showSnackBar(context, 'user not found');

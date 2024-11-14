@@ -6,6 +6,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../widget/constants.dart';
 import '../widget/custom_button.dart';
 import '../widget/custom_text_field.dart';
+import 'chat_page.dart';
 import 'login_page.dart';
 
 class ResgisterPage extends StatefulWidget {
@@ -97,6 +98,10 @@ class _ResgisterPageState extends State<ResgisterPage> {
                           try {
                             await registerUser();
                             showSnackBar(context, 'success');
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return ChatPage();
+                            })) ;
                           } on FirebaseAuthException catch (ex) {
                             if (ex.code == 'weak-password') {
                               showSnackBar(context, 'password is weak');
