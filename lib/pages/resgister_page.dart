@@ -70,21 +70,15 @@ class ResgisterPage extends StatelessWidget {
               CustomBotton(
                 onTap: () async {
                   try {
-                    UserCredential user = await FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(
-                            email: email!, password: password!);
+                    await registerUser();
                   } on FirebaseAuthException catch (ex) {
                     if (ex.code == 'weak-password') {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Weak Password')));
+                      showSnackBar(context, 'password is weak');
                     } else if (ex.code == 'email-already-in-use') {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                              'The account already exists for that email')));
+                      showSnackBar(context, 'email-already-in-use');
                     }
                   }
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('enail created')));
+                  showSnackBar(context, 'email created');
                 },
                 text: 'REGISTER',
               ),
@@ -121,5 +115,18 @@ class ResgisterPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
+  Future<void> registerUser() async {
+    UserCredential user = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email!, password: password!);
   }
 }
