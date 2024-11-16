@@ -5,17 +5,21 @@ import 'package:chat_app_with_firebase/models/message.dart';
 import '../widget/chat_buble.dart';
 
 class ChatPage extends StatelessWidget {
-  ChatPage({super.key});
+  ChatPage({
+    super.key,
+    required this.email,
+  });
 
   final CollectionReference messages =
       FirebaseFirestore.instance.collection(KMessagesCollection);
   final TextEditingController controller = TextEditingController();
   final _controller = ScrollController();
+  final String email;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: messages.orderBy('createdAt').snapshots(),
+      stream: messages.orderBy('createdAt', descending: true).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Messages> messagesList =
@@ -30,8 +34,8 @@ class ChatPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(Klogo, width: 40, height: 40),
-                  const Text(
-                    'Scholar Chat',
+                  Text(
+                    'Scholar Chat ',
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
@@ -41,10 +45,13 @@ class ChatPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: ListView.builder(
+                    reverse: true,
                     controller: _controller,
                     itemCount: messagesList.length,
                     itemBuilder: (context, index) {
-                      return ChatBuble(message: messagesList[index]);
+                      return messagesList[index].id == email
+                          ? ChatBuble(message: messagesList[index])
+                          : ChatBubleForFriend(message: messagesList[index]);
                     },
                   ),
                 ),
@@ -53,16 +60,18 @@ class ChatPage extends StatelessWidget {
                   child: TextField(
                     controller: controller,
                     onSubmitted: (data) {
-                      messages
-                          .add({'messages': data, 'createdAt': DateTime.now()});
+                      messages.add({
+                        'messages': data,
+                        'createdAt': DateTime.now(),
+                        "id": email
+                      });
                       controller.clear();
                       _controller.animateTo(
-                        _controller.position
-                            .maxScrollExtent, // to scroll to the bottom of the screen
+                        0, // to scroll to the bottom of the screen
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeIn,
                       );
-                    }, 
+                    },
                     decoration: InputDecoration(
                       hintText: 'Send a message',
                       suffixIcon: IconButton(

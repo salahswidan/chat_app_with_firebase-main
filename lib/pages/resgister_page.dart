@@ -73,6 +73,7 @@ class _ResgisterPageState extends State<ResgisterPage> {
                       height: 20,
                     ),
                     CustomFormTextField(
+                      isPass: false,
                       onChanged: (data) {
                         email = data;
                       },
@@ -82,6 +83,7 @@ class _ResgisterPageState extends State<ResgisterPage> {
                       height: 10,
                     ),
                     CustomFormTextField(
+                      isPass: true,
                       onChanged: (data) {
                         password = data;
                       },
@@ -98,10 +100,12 @@ class _ResgisterPageState extends State<ResgisterPage> {
                           try {
                             await registerUser();
                             showSnackBar(context, 'success');
-                              Navigator.push(context,
+                            Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return ChatPage();
-                            })) ;
+                              return ChatPage(
+                                email: email!,
+                              );
+                            }));
                           } on FirebaseAuthException catch (ex) {
                             if (ex.code == 'weak-password') {
                               showSnackBar(context, 'password is weak');

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -68,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 20,
                     ),
                     CustomFormTextField(
+                      isPass: false,
                       onChanged: (data) {
                         email = data;
                       },
@@ -77,6 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 10,
                     ),
                     CustomFormTextField(
+                      isPass: true,
                       onChanged: (data) {
                         password = data;
                       },
@@ -95,8 +99,10 @@ class _LoginPageState extends State<LoginPage> {
                             showSnackBar(context, 'success');
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return ChatPage();
-                            })) ;
+                              return ChatPage(
+                                email: email!,
+                              );
+                            }));
                           } on FirebaseAuthException catch (ex) {
                             if (ex.code == 'user-not-found') {
                               showSnackBar(context, 'user not found');
